@@ -38,19 +38,25 @@ class Palindrome
     current_longest = {begin_index: 0, string: "", length: 1}
 
     for cursor in 0..(@string.length - 1)
-      found_palindrome = find_palindrome(cursor)
+      
+      # check out of bound and if next letter is the same as current
+      if cursor+1 < @string.length && @string[cursor] == @string[cursor+1]  
+        alternative = find_palindrome(cursor,2)
+      end
+
+      # check for the palindrome normally(surrounding the current letter)
+      found_palindrome = find_palindrome(cursor,1)
+
+      # compare the two options
+      unless alternative.nil?
+        found_palindrome = alternative if alternative[:length] > found_palindrome[:length]
+      end
       
       # check if this paladrome is the largest
       if found_palindrome[:length] > current_longest[:length]
-        # set new longest length
         current_longest[:length] = found_palindrome[:length]
-
-        # save the longest palidrome's starting index location
         current_longest[:begin_index] = found_palindrome[:begin_index]
-
-        # set newest longest palindrome string
         current_longest[:string] = @string[current_longest[:begin_index], found_palindrome[:length]]
-
       end
     end
 
@@ -60,58 +66,31 @@ class Palindrome
 
   end
 
-  # returns a hash with "length" and "begin_index" of the palindrome found
-  #   this method checks from the center of a palindrome to the outside
-  def find_palindrome(cursor)
+  # finds a palindrome given the current position on @string and the initial_length( set of [1,2] )
+  def find_palindrome(cursor, initial_length)
     palindrome = {length: 0, begin_index: nil}
 
-       
-
-    # "even" palindrome
-    if cursor+1 < @string.length && @string[cursor] == @string[cursor+1]  
-      alternative = palindrome.clone
+    palindrome.tap do # returns this object at the end
 
       # variables for readability
       begin_index = cursor-1
       end_index = cursor+1
 
       # set the initial length
-      alternative[:length] = 2
+      palindrome[:length] = initial_length
 
-      # need to start from 2 instead of 1 for "even" alternative
-      end_index = cursor+2
+      # need to start from 2 instead of 1 for "even" palindrome
+      end_index = cursor + initial_length
       
-      # check out of bounds and is it alternative?
+      # check out of bounds and is it palindrome?
       while begin_index >= 0 && end_index < @string.length && @string[begin_index] == @string[end_index] 
-        alternative[:length] += 2 # adjust length of the alternative
+        palindrome[:length] += 2 # adjust length of the palindrome
         begin_index -= 1
         end_index += 1
       end
 
-      alternative[:begin_index] = begin_index + 1  # "add one" b/c undo the decrement made in the while loop
+      palindrome[:begin_index] = begin_index + 1  # "add one" b/c undo the decrement made in the while loop
+
     end
-
-    # variables for readability
-    begin_index = cursor-1
-    end_index = cursor+1
-
-    # set the initial length
-    palindrome[:length] = 1
-    
-    # check out of bounds and is it palindrome?
-    while begin_index >= 0 && end_index < @string.length && @string[begin_index] == @string[end_index] 
-      palindrome[:length] += 2 # adjust length of the palindrome
-      begin_index -= 1
-      end_index += 1
-    end
-
-    palindrome[:begin_index] = begin_index + 1  # "add one" b/c undo the decrement made in the while loop
-
-    unless alternative.nil?
-      palindrome = alternative if alternative[:length] > palindrome[:length]
-    end
-
-    palindrome
-
   end
 end
