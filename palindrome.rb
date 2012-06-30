@@ -66,13 +66,14 @@ class Palindrome
     palindrome = {length: 0, begin_index: nil}
 
        
-    # variables for readability
-    begin_index = cursor-1
-    end_index = cursor+1
 
     # "even" palindrome
     if cursor+1 < @string.length && @string[cursor] == @string[cursor+1]  
       alternative = palindrome.clone
+
+      # variables for readability
+      begin_index = cursor-1
+      end_index = cursor+1
 
       # set the initial length
       alternative[:length] = 2
