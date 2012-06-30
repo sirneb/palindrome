@@ -65,35 +65,52 @@ class Palindrome
   def find_palindrome(cursor)
     palindrome = {length: 0, begin_index: nil}
 
-    palindrome.tap do  # returns this object
        
-      # variables for readability
-      begin_index = cursor-1
-      end_index = cursor+1
+    # variables for readability
+    begin_index = cursor-1
+    end_index = cursor+1
 
-      # "even" palindrome
-      if cursor+1 < @string.length && @string[cursor] == @string[cursor+1]  
-        # set the initial length
-        palindrome[:length] = 2
+    # "even" palindrome
+    if cursor+1 < @string.length && @string[cursor] == @string[cursor+1]  
+      alternative = palindrome.clone
 
-        # need to start from 2 instead of 1 for "even" palindrome
-        end_index = cursor+2
+      # set the initial length
+      alternative[:length] = 2
+
+      # need to start from 2 instead of 1 for "even" alternative
+      end_index = cursor+2
       
-      # "odd" palindrome
-      else 
-        # set the initial length
-        palindrome[:length] = 1
-      end
-      
-      # check out of bounds and is it palindrome?
+      # check out of bounds and is it alternative?
       while begin_index >= 0 && end_index < @string.length && @string[begin_index] == @string[end_index] 
-        palindrome[:length] += 2 # adjust length of the palindrome
+        alternative[:length] += 2 # adjust length of the alternative
         begin_index -= 1
         end_index += 1
       end
 
-      palindrome[:begin_index] = begin_index + 1  # "add one" b/c undo the decrement made in the while loop
+      alternative[:begin_index] = begin_index + 1  # "add one" b/c undo the decrement made in the while loop
     end
+
+    # variables for readability
+    begin_index = cursor-1
+    end_index = cursor+1
+
+    # set the initial length
+    palindrome[:length] = 1
+    
+    # check out of bounds and is it palindrome?
+    while begin_index >= 0 && end_index < @string.length && @string[begin_index] == @string[end_index] 
+      palindrome[:length] += 2 # adjust length of the palindrome
+      begin_index -= 1
+      end_index += 1
+    end
+
+    palindrome[:begin_index] = begin_index + 1  # "add one" b/c undo the decrement made in the while loop
+
+    unless alternative.nil?
+      palindrome = alternative if alternative[:length] > palindrome[:length]
+    end
+
+    palindrome
 
   end
 end

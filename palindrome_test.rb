@@ -33,6 +33,7 @@ class PalindromeTest < MiniTest::Unit::TestCase
         @two_same_length_palin = "lsjzlfjabababc" # ababa, babab
         @no_palin = "lksjdflsjfsl" # nil
         @repeat_letters = "a"*14 #itself
+        @repeat_letters2 = "a"*15 #itself
         @more_test1 = "a"*7 + "b"*8
         @more_test1b = "a"*8 + "b"*7
         @more_test2 = "lsjdflsjkdfkaabjdlkjbdl" #aa
@@ -40,6 +41,7 @@ class PalindromeTest < MiniTest::Unit::TestCase
         @more_test4 = "abalsdfqwerytrewq" #aba
         @more_test5 = "ababa" #ababa
         @more_test6 = "cbaabc" #ababa
+        @more_test7 = "cbaaabd" #ababa
       end
 
       it "should find the largest palindrome in the string" do
@@ -55,6 +57,8 @@ class PalindromeTest < MiniTest::Unit::TestCase
         assert_equal("",@palindrome.largest)
         @palindrome.string = @repeat_letters
         assert_equal(@repeat_letters,@palindrome.largest)
+        @palindrome.string = @repeat_letters2
+        assert_equal(@repeat_letters2,@palindrome.largest)
         @palindrome.string = @more_test1
         assert_equal("b"*8,@palindrome.largest)
         @palindrome.string = @more_test1b
@@ -69,6 +73,8 @@ class PalindromeTest < MiniTest::Unit::TestCase
         assert_equal("ababa",@palindrome.largest)
         @palindrome.string = @more_test6
         assert_equal("cbaabc",@palindrome.largest)
+        @palindrome.string = @more_test7
+        assert_equal("baaab",@palindrome.largest)
       end
     end
   end
