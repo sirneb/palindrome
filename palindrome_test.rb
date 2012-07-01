@@ -1,7 +1,7 @@
 require "minitest/unit"
 require "minitest/spec"
 require "minitest/autorun"
-require "./palindrome.rb"
+require_relative "palindrome.rb"
 
 class PalindromeTest < MiniTest::Unit::TestCase
 

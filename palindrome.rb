@@ -35,17 +35,17 @@ class Palindrome
   def find_largest
 
     # hash (choice over just variables for clearer code)
-    current_longest = {begin_index: 0, string: "", length: 1}
+    current_longest = {begin_index: nil, string: "", length: 1}
 
-    for cursor in 0..(@string.length - 1)
+    for cursor in 0...@string.length
       
       # check out of bound and if next letter is the same as current
       if cursor+1 < @string.length && @string[cursor] == @string[cursor+1]  
-        alternative = find_palindrome(cursor,2)
+        alternative = find_palindrome :cursor => cursor, :initial_length => 2
       end
 
       # check for the palindrome normally(surrounding the current letter)
-      found_palindrome = find_palindrome(cursor,1)
+      found_palindrome = find_palindrome :cursor => cursor
 
       # compare the two options
       unless alternative.nil?
@@ -67,7 +67,9 @@ class Palindrome
   end
 
   # finds a palindrome given the current position on @string and the initial_length( set of [1,2] )
-  def find_palindrome(cursor, initial_length)
+  #   Default initial_length is 1
+  def find_palindrome(args)
+    cursor, initial_length = args[:cursor], args[:initial_length] || 1
     palindrome = {length: 0, begin_index: nil}
 
     palindrome.tap do # returns this object at the end
